@@ -1,0 +1,36 @@
+.group-wrapper {
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  height: 100%;
+}
+.group-list {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.group-dashboard-container {
+  width: 100%;
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: start;
+}
+.group-card {
+  border-radius: 10px;
+  background-color: rgb(244, 254, 244);
+  padding: 1.5rem;
+}
+.label {
+  font-size: 2rem;
+  text-transform: capitalize;
+}
+.members-wrapper {
+  display: flex;
+  gap: 1rem;
+}

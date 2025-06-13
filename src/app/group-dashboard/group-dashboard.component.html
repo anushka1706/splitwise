@@ -1,0 +1,26 @@
+<div class="group-dashboard-container">
+  <button mat-raised-button color="primary" (click)="openDialog()">
+    + New Group
+  </button>
+  <div class="group-list">
+    <div class="groups-wrapper" *ngIf="allGroups">
+      <div class="group-card" *ngFor="let group of allGroups">
+        <p class="label label-groupname">{{ group.name }}</p>
+        <div class="members-wrapper">
+          <p class="label">Group Members :</p>
+          <span *ngFor="let user of group.members" class="member-name">{{
+            user.name
+          }}</span>
+        </div>
+        <button
+          class="view-btn"
+          (click)="onView(group['id'])"
+          mat-raised-button
+          color="accent"
+        >
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

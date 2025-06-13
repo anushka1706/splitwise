@@ -1,0 +1,28 @@
+<div class="form-container">
+  <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+    <div class="fields">
+      <mat-form-field color="accent">
+        <mat-label>Name : </mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div class="fields">
+      <mat-form-field color="primary">
+        <mat-label>Choose memebers</mat-label>
+        <mat-select multiple formControlName="members">
+          <mat-option
+            [value]="{ id: user['id'], name: user['name'] }"
+            *ngFor="let user of userOptions"
+            >{{ user.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="actions">
+      <button color="primary" mat-dialog-close type="submit" mat-raised-button>
+        Add
+      </button>
+      <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,86 @@
+<div class="form-container">
+  <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+    <div class="field-group">
+      <div class="fields">
+        <mat-form-field color="accent">
+          <mat-label>Describe : </mat-label>
+          <input matInput type="text" formControlName="description" />
+        </mat-form-field>
+      </div>
+      <div class="fields">
+        <mat-form-field color="accent">
+          <mat-label>Amount : </mat-label>
+          <input matInput type="number" formControlName="amount" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="fields">
+        <mat-form-field color="accent">
+          <mat-label>Paid By : </mat-label>
+          <mat-select formControlName="paidBy" (selectionChange)="onPaidBy()">
+            <mat-option
+              [value]="{ id: user['id'], name: user['name'] }"
+              *ngFor="let user of userOptions"
+              >{{ user.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="fields">
+        <mat-form-field color="accent">
+          <mat-label>Split between</mat-label>
+          <mat-select
+            multiple
+            (selectionChange)="calculateSplitAmount()"
+            [compareWith]="compareUsers"
+            formControlName="splitBetween"
+          >
+            <mat-option
+              [value]="{ id: user['id'], name: user['name'] }"
+              *ngFor="let user of userOptions"
+              >{{ user.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="fields split-field">
+      <mat-form-field color="accent">
+        <mat-label>Split type : </mat-label>
+        <mat-select
+          formControlName="splitType"
+          (selectionChange)="onSplitType()"
+        >
+          <mat-option [value]="type" *ngFor="let type of splitType">{{
+            type
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="split-wrapper" *ngIf="type === 'even'">
+      <mat-form-field
+        color="accent"
+        class="members"
+        *ngFor="let user of splitBetween">
+        <input matInput [value]="user.name + ' - ' + evenAmount" readonly formControlName="splitAmount"/>
+      </mat-form-field>
+    </div>
+    <div class="split-wrapper" *ngIf="type === 'custom'">
+      <mat-form-field
+        color="accent"
+        class="members"
+        *ngFor="let user of splitBetween"
+      >
+        <mat-label>{{ user.name }}</mat-label>
+        <input matInput type="number" class="amount-split" (change)="onCustomAmount($event)"/>
+      </mat-form-field>
+    </div>
+    <div class="actions">
+      <button color="accent" mat-dialog-close type="submit" mat-raised-button>
+        Add
+      </button>
+      <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+    </div>
+  </form>
+</div>
