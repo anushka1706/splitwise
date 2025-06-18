@@ -12,6 +12,8 @@ export class NewGroupDialogComponent implements OnInit {
   groupForm !: FormGroup
   userOptions !: any[]
   selectedUsers !: string[]
+  error: boolean = false
+  errorMessage !: string
 
   constructor(
     private fb: FormBuilder,
@@ -30,4 +32,19 @@ export class NewGroupDialogComponent implements OnInit {
   onSubmit() {
     this.dialogRef.close(this.groupForm.value)
   }
+  onCancel() {
+    this.dialogRef.close()
+  }
+  checkMinimumUsers() {
+    const members = this.groupForm.value.members;
+    if (!members || members.length <= 1) {
+      this.error = true;
+      this.errorMessage = 'There should be at least 2 members';
+    } else {
+      this.error = false;
+      this.errorMessage = '';
+    }
+  }
+compareUsers = (a: any, b: any): boolean => a?.id === b?.id;
+
 }

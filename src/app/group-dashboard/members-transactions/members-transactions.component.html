@@ -1,1 +1,25 @@
-<p>members-transactions works!</p>
+<div class="balance-container">
+  <p class="heading">Group balance</p>
+  <div class="balance-wrapper">
+    <div class="user-balance" *ngFor="let user of members">
+      <p>
+        {{ user["name"] }}
+      </p>
+      <p class="info">
+        <span class="status gets-back" *ngIf="user.getsBack">gets back </span>
+        <span class="status gets-back" *ngIf="user.getsBack"
+          >&#8377;{{ user.amount }}</span
+        >
+        <span class="status owes" *ngIf="!user.getsBack && user.amount > 0"
+          >Owes to
+        </span>
+        <span class="amount" *ngIf="!user.getsBack && user.amount > 0"
+          >&#8377;{{ user["amount"] }} to {{ user["owesTo"].name }}</span
+        >
+        <span class="amount settled" *ngIf="user.amount === 0"
+          >All settled with {{ user["owesTo"].name }}</span
+        >
+      </p>
+    </div>
+  </div>
+</div>

@@ -7,10 +7,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ViewGroupComponent } from './group-dashboard/view-group/view-group.component';
@@ -18,6 +19,7 @@ import { NewGroupDialogComponent } from './group-dashboard/new-group-dialog/new-
 import { MembersTransactionsComponent } from './group-dashboard/members-transactions/members-transactions.component';
 import { AddExpenseDialogComponent } from './group-dashboard/add-expense-dialog/add-expense-dialog.component';
 import { SettleDialogComponent } from './group-dashboard/settle-dialog/settle-dialog.component';
+import { NetBalanceComponent } from './group-dashboard/net-balance/net-balance.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { SettleDialogComponent } from './group-dashboard/settle-dialog/settle-di
     NewGroupDialogComponent,
     MembersTransactionsComponent,
     AddExpenseDialogComponent,
-    SettleDialogComponent
+    SettleDialogComponent,
+    NetBalanceComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +38,7 @@ import { SettleDialogComponent } from './group-dashboard/settle-dialog/settle-di
     MatSelectModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
     MatSnackBarModule,
     MatButtonModule,
     MatInputModule,

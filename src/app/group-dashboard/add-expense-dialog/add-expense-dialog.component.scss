@@ -22,6 +22,11 @@ form {
 .fields {
   width: 100%;
 }
+.error {
+  font-size: 1.7rem;
+  color: red;
+  font-weight: 500;
+}
 input,
 select {
   width: 100%;
@@ -46,18 +51,3 @@ select {
   width: fit-content;
   gap: 1rem;
 }
-// .label {
-//   font-size: 2rem;
-//   color: white;
-// }
-// .members {
-//   display: flex;
-//   gap: 5px;
-//   color: black;
-//   padding: 5px;
-//   border-radius: 5px;
-//   background-color: rgb(222, 222, 222);
-// }
-// .members .label {
-//   color: black;
-// }

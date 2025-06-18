@@ -1,0 +1,28 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+}
+.field-group {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.settle-container {
+  width: auto;
+  height: auto;
+  padding: 1rem;
+}
+.actions {
+  width: 100%;
+  gap: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.error {
+  color: red;
+  font-weight: 500;
+}

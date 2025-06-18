@@ -1,1 +1,85 @@
-<p>settle-dialog works!</p>
+<div class="settle-container">
+  <form [formGroup]="settleForm" (ngSubmit)="onSubmit()">
+    <div class="field-group">
+      <div class="fields">
+        <mat-form-field color="accent">
+          <mat-label>Pay To:</mat-label>
+          <input
+            type="text"
+            (input)="filterPayto()"
+            formControlName="to"
+            matInput
+            [matAutocomplete]="payToAuto"
+          />
+          <mat-autocomplete
+            #payToAuto="matAutocomplete"
+            (optionSelected)="filterByWhom()"
+            [displayWith]="displayUser"
+          >
+            <mat-option
+              *ngFor="let user of data.group.members"
+              [disabled]="user.id === settleForm.get('who')?.value?.id"
+              [value]="{ id: user.id, name: user.name }"
+            >
+              {{ user.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="fields">
+        <mat-form-field color="accent">
+          <mat-label>By Whom:</mat-label>
+          <input
+            type="text"
+            (input)="filterByWhom()"
+            formControlName="who"
+            matInput
+            [matAutocomplete]="byWhomAuto"
+          />
+          <mat-autocomplete
+            #byWhomAuto="matAutocomplete"
+            (optionSelected)="filterPayto()"
+            [displayWith]="displayUser"
+          >
+            <mat-option
+              *ngFor="let user of data.group.members"
+              [disabled]="user.id === settleForm.get('to')?.value?.id"
+              [value]="{ id: user.id, name: user.name }"
+            >
+              {{ user.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="fields" *ngIf="isSettlement">
+        <mat-form-field color="accent">
+          <mat-label>Amount (₹):</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="amountPaid"
+            (input)="onAmountChange($event)"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <p class="error" *ngIf="error">{{ errorMessage }}</p>
+
+    <div class="actions">
+      <button
+        color="accent"
+        mat-dialog-close
+        type="submit"
+        mat-raised-button
+        [disabled]="error || settleForm.invalid"
+      >
+        Settle
+      </button>
+      <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+    </div>
+  </form>
+</div>

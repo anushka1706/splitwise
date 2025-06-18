@@ -9,7 +9,11 @@
     <div class="fields">
       <mat-form-field color="primary">
         <mat-label>Choose memebers</mat-label>
-        <mat-select multiple formControlName="members">
+        <mat-select
+          multiple
+          formControlName="members"
+          (selectionChange)="checkMinimumUsers()"
+        >
           <mat-option
             [value]="{ id: user['id'], name: user['name'] }"
             *ngFor="let user of userOptions"
@@ -17,12 +21,26 @@
           >
         </mat-select>
       </mat-form-field>
+      <p class="error" *ngIf="error">{{ errorMessage }}</p>
     </div>
     <div class="actions">
-      <button color="primary" mat-dialog-close type="submit" mat-raised-button>
+      <button
+        color="primary"
+        [disabled]="groupForm.invalid || error"
+        mat-dialog-close
+        type="submit"
+        mat-raised-button
+      >
         Add
       </button>
-      <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+      <button
+        (click)="onCancel()"
+        mat-raised-button
+        color="warn"
+        mat-dialog-close
+      >
+        Cancel
+      </button>
     </div>
   </form>
 </div>

@@ -28,21 +28,19 @@ export class GroupDashboardComponent implements OnInit {
       panelClass: 'form-container'
     });
     dialog.afterClosed().subscribe(groupData => {
-      const data = {
-        id: this.GroupService.generateId(),
-        name: groupData.name,
-        members: groupData.members,
-        expenses: [],
-        settle: [],
+      if (groupData) {
+        const data = {
+          id: this.GroupService.generateId(),
+          name: groupData.name,
+          members: groupData.members,
+          expenses: [],
+          settle: [],
+        }
+        this.GroupService.adNewGroup(data)
       }
-      this.GroupService.adNewGroup(data)
     })
   }
   onView(id: number) {
-    this.router.navigate(['/view-group'], {
-      queryParams: {
-        id: id
-      }}
-    )
+    this.router.navigate(['/view-group', id]);
   }
 }

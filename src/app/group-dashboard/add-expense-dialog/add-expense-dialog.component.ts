@@ -14,10 +14,15 @@ export class AddExpenseDialogComponent {
   selectedUsers !: string[]
   splitType: string[] = ['even', 'custom']
   type !: string
-  paidBy !: string
+  paidBy: { [key: string]: any } = {}
   evenAmount: number = 0
   splitBetween !: any[]
-
+  splitAmount: { [key: string]: number } = {}
+  errorMessage !: string
+  error: boolean = false
+  isValidAmount: boolean = false
+  customTouched: boolean[] = []
+  splitError: string = ''
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddExpenseDialogComponent>,
@@ -32,37 +37,146 @@ export class AddExpenseDialogComponent {
       splitBetween: ['', Validators.required],
       splitType: ['', Validators.required],
       paidBy: ['', Validators.required],
-      splitAmount: ['', Validators.required]
+      pendingAmount: ['', Validators.required]
     });
     this.userOptions = this.data.members
   }
 
   onSubmit() {
-    // this.dialogRef.close(this.groupForm.value)
-    console.log(this.expenseForm.value)
+    this.expenseForm.get('splitBetween')?.setValue(this.splitBetween);
+    this.dialogRef.close(this.expenseForm.value)
   }
-  calculateSplitAmount() {
-    this.splitBetween = this.expenseForm.value.splitBetween
-    console.log(this.splitBetween)
-    switch (this.type) {
-      case ('even'):
-        const totalMembers = this.expenseForm.value.splitBetween.length
-        this.evenAmount = +(this.expenseForm.value.amount / totalMembers).toFixed(2)
-        break
+  calculatePendingAmount() {
+    let total = 0
+    if (this.expenseForm.value.amount && this.expenseForm.value.splitBetween.length > 1) {
+      this.splitBetween.forEach(user => {
+        if (user.id !== this.paidBy['id']) {
+          total += user.amount
+        }
+      })
+      this.expenseForm.patchValue({ pendingAmount: total })
 
-      case ('custom'):
     }
+    // console.log(this.expenseForm.value)
   }
-  onCustomAmount(e: Event) {
 
+  onEvenAmount() {
+    if (this.splitBetween && this.splitBetween.length) {
+      const totalMembers = this.expenseForm.value.splitBetween.length
+      this.evenAmount = +(this.expenseForm.value.amount / totalMembers).toFixed(2)
+      this.splitBetween.forEach(user => {
+        user['amount'] = this.evenAmount
+      })
+    }
+    if (this.expenseForm.value.amount) {
+      this.paidBy['amount'] = this.expenseForm.value.amount
+      this.expenseForm.value.paidBy = this.paidBy
+    }
+    this.isValidAmount = true
+    // console.log(this.expenseForm.value)
   }
+  setAmount(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const value = parseFloat(input.value);
+    this.paidBy['amount'] = value
+    this.onEvenAmount()
+    // console.log(this.expenseForm.value)
+    this.calculatePendingAmount()
+  }
+  onCustomAmount(event: Event, index: number): void {
+    const input = event.target as HTMLInputElement;
+    const valueStr = input.value.trim();
+
+    if (valueStr === '') {
+      this.splitBetween[index]['amount'] = 0;
+      this.checkSum();
+      return;
+    }
+
+    const value = parseFloat(valueStr);
+
+    if (!isNaN(value) && value >= 0) {
+      this.splitBetween[index]['amount'] = value;
+      this.checkSum();
+    }
+    this.calculatePendingAmount()
+    // console.log(this.expenseForm.value)
+  }
+  checkSum() {
+    this.isValidAmount = false
+    let totalAmount = 0
+    console.log(this.splitBetween)
+    this.splitBetween.forEach(user => {
+      if (user.amount && user.amount > 0) {
+        totalAmount += user.amount
+      }
+    })
+    if (this.expenseForm.value.amount) {
+      this.paidBy['amount'] = this.expenseForm.value.amount
+      this.expenseForm.value.paidBy = this.paidBy
+      this.error = false
+      this.errorMessage = ''
+    }
+    else return
+    if (this.paidBy['amount'] === totalAmount) {
+      this.errorMessage = ''
+      this.error = false
+      this.isValidAmount = true
+    }
+    else if (this.paidBy['amount'] >= totalAmount) {
+      this.errorMessage = 'Custom amount is less than the paid amount'
+      this.error = true
+      this.isValidAmount = false
+    }
+    else if (this.paidBy['amount'] <= totalAmount) {
+      this.errorMessage = 'Custom amount is more than the paid amount'
+      this.error = true
+      this.isValidAmount = false
+    }
+    // console.log(this.expenseForm.value)
+  }
+
   onSplitType() {
-    this.type = this.expenseForm.value.splitType
-    this.calculateSplitAmount()
+    this.type = this.expenseForm.value.splitType;
+    this.splitBetween = this.expenseForm.value.splitBetween.map((user: any) => ({
+      ...user,
+      amount: 0
+    }));
+
+    if (this.type === 'even') {
+      this.onEvenAmount();
+    }
+    const others = this.expenseForm.value.splitBetween.filter((u: any) => u.id !== this.paidBy['id']);
+
+    if (others.length < 1) {
+      this.error = true;
+      this.splitError = 'Please select at least one more member to split with.';
+      this.isValidAmount = false;
+    }
+    this.calculatePendingAmount()
+    // console.log(this.expenseForm.value)
   }
+  onSplitBetweenChange() {
+    const selected = this.expenseForm.value.splitBetween || [];
+    const others = selected.filter((u: any) => u.id !== this.paidBy['id']);
+
+    if (others.length < 1) {
+      this.error = true;
+      this.splitError = 'Please select at least one more member to split with.';
+      this.isValidAmount = false;
+    } else {
+      this.error = false;
+      this.errorMessage = '';
+      this.onSplitType();
+    }
+    // console.log(this.expenseForm.value)
+  }
+
   onPaidBy() {
-    const paidBy = this.expenseForm.value.paidBy
-    this.expenseForm.patchValue({ splitBetween: [paidBy] })
+    this.paidBy = this.expenseForm.value.paidBy
+    this.expenseForm.patchValue({ splitBetween: [this.paidBy] })
+    // console.log(this.expenseForm.value)
   }
+
   compareUsers = (a: any, b: any) => a?.id === b?.id;
 }

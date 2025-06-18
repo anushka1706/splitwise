@@ -1,12 +1,49 @@
 <div class="container">
   <div class="expenses">
     <div class="actions">
-      <button mat-raised-button color="primary" (click)="openExpenseDialog()">Add expenses</button>
-      <button mat-raised-button color="accent">Settle</button>
+      <button mat-raised-button color="primary" (click)="openExpenseDialog()">
+        Add expenses
+      </button>
+      <button mat-raised-button color="accent" (click)="openSettleDialog()">
+        Settle
+      </button>
+    </div>
+    <div class="all-expenses">
+      <div class="expense-items" *ngFor="let exp of group?.expenses">
+        <div class="date-wrapper">
+          <span class="date"><span class="month"></span></span>
+        </div>
+        <div class="info">
+          <span class="heading">{{ exp.description }}</span>
+          <div class="members-wrapper">
+            <div class="members">
+              <p class="heading-2">{{ exp.paidBy.name }} paid</p>
+              <p class="paidby-amount">&#8377; {{ exp.paidBy.amount }}</p>
+            </div>
+            <div class="members" *ngFor="let users of exp.splitBetween">
+              <p class="heading-2" *ngIf="users.id !== exp.paidBy.id">
+                lent to {{ users.name }}
+              </p>
+              <p class="lent-to-amount" *ngIf="users.id !== exp.paidBy.id">
+                &#8377; {{ users.amount }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="transactions">
-    <app-members-transactions
-    ></app-members-transactions>
+  <div class="transaction-header">
+    <div class="nav-actions">
+      <button mat-raised-button color="accent" (click)="onGroupBalance()">
+        View Group Balance
+      </button>
+      <button mat-raised-button color="accent" (click)="onNetBalance()">
+        View Net Balance
+      </button>
+    </div>
+    <div class="side-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

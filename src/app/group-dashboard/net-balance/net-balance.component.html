@@ -1,0 +1,14 @@
+<div class="net-balance">
+  <p class="heading">Net balance</p>
+  <div class="members" *ngFor="let user of netBalance | keyvalue">
+    <p>{{ user.value.name }}</p>
+    <p>You Paid: ₹{{ user.value.youPaid }}</p>
+    <p>Your Share: ₹{{ user.value.youShare }}</p>
+    <p *ngIf="user.value.totalDiff < 0" class="negative">
+      You Owe ₹{{ user.value.totalDiff }}
+    </p>
+    <p *ngIf="user.value.totalDiff > 0" class="positive">
+      You are owed ₹{{ user.value.totalDiff }}
+    </p>
+  </div>
+</div>
