@@ -165,7 +165,7 @@ export class GroupService {
         group.settle.push({
           id: userId,
           name: userName,
-          amount: amount,
+          amount: amount.toFixed(2),
           owesTo: { id: payerId, name: payerName },
           getsBack: false
         });

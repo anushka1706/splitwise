@@ -57,7 +57,6 @@ export class AddExpenseDialogComponent {
       this.expenseForm.patchValue({ pendingAmount: total })
 
     }
-    // console.log(this.expenseForm.value)
   }
 
   onEvenAmount() {
@@ -73,14 +72,12 @@ export class AddExpenseDialogComponent {
       this.expenseForm.value.paidBy = this.paidBy
     }
     this.isValidAmount = true
-    // console.log(this.expenseForm.value)
   }
   setAmount(e: Event) {
     const input = e.target as HTMLInputElement;
     const value = parseFloat(input.value);
     this.paidBy['amount'] = value
     this.onEvenAmount()
-    // console.log(this.expenseForm.value)
     this.calculatePendingAmount()
   }
   onCustomAmount(event: Event, index: number): void {
@@ -100,7 +97,6 @@ export class AddExpenseDialogComponent {
       this.checkSum();
     }
     this.calculatePendingAmount()
-    // console.log(this.expenseForm.value)
   }
   checkSum() {
     this.isValidAmount = false
@@ -133,7 +129,6 @@ export class AddExpenseDialogComponent {
       this.error = true
       this.isValidAmount = false
     }
-    // console.log(this.expenseForm.value)
   }
 
   onSplitType() {
@@ -154,7 +149,6 @@ export class AddExpenseDialogComponent {
       this.isValidAmount = false;
     }
     this.calculatePendingAmount()
-    // console.log(this.expenseForm.value)
   }
   onSplitBetweenChange() {
     const selected = this.expenseForm.value.splitBetween || [];
@@ -169,13 +163,11 @@ export class AddExpenseDialogComponent {
       this.errorMessage = '';
       this.onSplitType();
     }
-    // console.log(this.expenseForm.value)
   }
 
   onPaidBy() {
     this.paidBy = this.expenseForm.value.paidBy
     this.expenseForm.patchValue({ splitBetween: [this.paidBy] })
-    // console.log(this.expenseForm.value)
   }
 
   compareUsers = (a: any, b: any) => a?.id === b?.id;
