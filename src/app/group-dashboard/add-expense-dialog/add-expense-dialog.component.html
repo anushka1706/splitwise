@@ -17,6 +17,7 @@
             (input)="setAmount($event)"
           />
         </mat-form-field>
+        <p class="error" *ngIf="amountError">{{ amountErrorMessage }}</p>
       </div>
     </div>
     <div class="field-group">
@@ -50,7 +51,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <p class="error" *ngIf="error">{{splitError}}</p>
+        <p class="error" *ngIf="error">{{ splitError }}</p>
       </div>
     </div>
     <div class="fields split-field">
@@ -94,7 +95,7 @@
     <div class="actions">
       <button
         color="accent"
-        [disabled]="error || expenseForm.invalid || !isValidAmount"
+        [disabled]="error || expenseForm.invalid || !isValidAmount || amountError"
         mat-dialog-close
         type="submit"
         mat-raised-button

@@ -21,8 +21,10 @@ export class AddExpenseDialogComponent {
   errorMessage !: string
   error: boolean = false
   isValidAmount: boolean = false
-  customTouched: boolean[] = []
+  amountErrorMessage: string = ''
+  amountError: boolean = false
   splitError: string = ''
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddExpenseDialogComponent>,
@@ -76,9 +78,17 @@ export class AddExpenseDialogComponent {
   setAmount(e: Event) {
     const input = e.target as HTMLInputElement;
     const value = parseFloat(input.value);
-    this.paidBy['amount'] = value
-    this.onEvenAmount()
-    this.calculatePendingAmount()
+    if (value > 0) {
+      this.paidBy['amount'] = value
+      this.onEvenAmount()
+      this.calculatePendingAmount()
+      this.amountError = false
+      this.amountErrorMessage = ''
+    }
+    else {
+      this.amountError = true
+      this.amountErrorMessage = 'Amount should be more than 0'
+    }
   }
   onCustomAmount(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;
